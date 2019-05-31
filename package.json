@@ -1,0 +1,21 @@
+{
+  "name": "mysql-nodejs-rest-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon src/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3",
+    "lodash": "^4.17.11",
+    "mysql": "^2.15.0",
+    "yup": "^0.27.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.5"
+  }
+}
