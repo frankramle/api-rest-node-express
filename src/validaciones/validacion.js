@@ -13,7 +13,10 @@ module.exports = {
                     .required('id is required')
            // email: yup.string().matches(/^[a-z0-9_.]+@[a-z0-9]+\.[a-z0-9_.]+$/).required(),
         });
-        schema.validateSync(data);
+        console.log("alert: ")
+        var a = schema.validateSync(data);
+        console.log("esss: ")
+        console.log(a);
     },
 
     validacionIdInexistente: (data) => {

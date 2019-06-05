@@ -7,19 +7,71 @@ var _= require('lodash');
 
 // GET todos los clientes
 router.get('/clientes', (req, res) => {
-    var sql = 'SELECT * FROM clientes';
-    connection.query(sql, (err, rows, fields) => {     
-        if(!err) {
-            res.json({ clientes: rows });
-        } else {
-            console.log(err);
-        }
-    });
+
+    console.log(req);
+    var sizeQuery = _.size(req.query)
+    var pathUrl = req.originalUrl;
+    var queryUrl = pathUrl.replace("/clientes?", "")
+    console.log("la query es: " + queryUrl)
+    var queryUrl = queryUrl.replace(/=/g, "='")
+    queryUrl = queryUrl.replace(/&/g, "' AND ")
+
+    console.log("primer: " + queryUrl)
+    queryUrl = queryUrl + "'"
+
+    console.log("segundo: " + queryUrl)
+
+    if (sizeQuery === 0) {
+        var sql = 'SELECT * FROM clientes';
+        connection.query(sql, (err, rows, fields) => {     
+            if(!err) {
+                res.json({ clientes: rows });
+            } else {
+                console.log(err);
+            }
+        });
+
+    } else if(sizeQuery === 1) {
+        var sql = 'SELECT * FROM clientes WHERE ' + queryUrl ;
+        console.log("la query es: " + sql)
+        connection.query(sql, (err, rows, fields) => {     
+            if(!err) {
+                res.json({ clientes: rows });
+            } else {
+                console.log(err);
+            }
+        });
+    } else if (sizeQuery === 2) {
+        var sql = 'SELECT * FROM client WHERE ' + queryUrl ;
+        console.log("la query es: " + sql)
+        console.log("el cod res: ")
+        console.log(res.statusCode)
+        connection.query(sql, (err, results, fields) => { 
+               
+            if(!err) {
+                res.json({ clientes: results });
+            } else {
+                console.log("error");
+                console.log(err.sqlMessage)
+                console.log(err.sqlState)
+                console.log("code")
+                console.log(err.code)
+                errores.error400(err, req, res)
+            }
+        });
+    }
+
+
+
+
 });
 
 // GET Clientes por id
 router.get('/clientes/:id', (req, res) => {
+    console.log(req);
     validacion.validacionDataIds(req.params);
+    
+    
     const { id } = req.params;
     var sql = 'SELECT * FROM clientes WHERE id = ?';
     
@@ -32,14 +84,17 @@ router.get('/clientes/:id', (req, res) => {
     });
 });
 
+
 // DELETE Clientes por id
 router.delete('/clientes/:id', (req, res) => {
 
     validacion.validacionDataIds(req.params);
     const { id } = req.params;
     var sql = 'DELETE FROM clientes WHERE id = ?';
-
+    
     connection.query(sql, [id], (err, rows, fields) => {
+        console.log("el affectedRows es:");
+        console.log(rows.affectedRows)
         if(!err) {
             res.json({status: 'Cliente Eliminado'});
         } else {
@@ -87,5 +142,23 @@ router.put('/clientes/:id', (req, res) => {
 
 router.get('*', (req, res) => { errores.error404(req, res) });
 router.use((error, req, res, next) =>{errores.error400(error, req, res, next)});
+  
+// //manejar error 404
+// router.get('*', (req, res) => {
+//   res.status(404).json({
+//     status: 'error',
+//     error: '404: File Not Found'
+//   });
+// });
+
+// manejar error 400
+// router.use( function(error, req, res, next) {
+//     res.status(400).json({
+//         status: 'error',
+//         name: error.name,
+//         error: error.message,
+//         path: error.path
+//     });
+// });
   
 module.exports = router;
