@@ -3,19 +3,19 @@ const mysql = require('mysql');
 const mysqlConnection = mysql.createConnection({
     
     //Localmente
-    host: 'localhost',
-    user: 'root', //user por defecto
-    password: 'lima',
-    database: 'irso_2019',
-    multipleStatements: true
+    //host: 'localhost',
+    //user: 'root', //user por defecto
+    //password: 'lima',
+    //database: 'irso_2019',
+    //multipleStatements: true
 
     //En la web
-    // host: 'www.db4free.net',
-    // port: '3306',
-    // user: 'irsopruebas', //user por defecto
-    // password: 'bfef8ed1',
-    // database: 'irsotaller',
-    // multipleStatements: true
+    host: 'www.db4free.net',
+    port: '3306',
+    user: 'irsopruebas', //user por defecto
+    password: 'bfef8ed1',
+    database: 'irsotaller',
+    multipleStatements: true
 });
 
 //Verifico si me conecte correctamente a la base de datos
