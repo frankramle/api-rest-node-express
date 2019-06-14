@@ -60,11 +60,8 @@ router.get('/clientes', (req, res) => {
             }
         });
     }
-
-
-
-
 });
+
 
 // GET Clientes por id
 router.get('/clientes/:id', (req, res) => {
